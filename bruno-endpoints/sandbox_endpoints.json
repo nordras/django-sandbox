@@ -1,0 +1,68 @@
+{
+  "version": "1",
+  "name": "sandbox-endpoints",
+  "type": "collection",
+  "endpoints": [
+    {
+      "name": "Listar Rooms",
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/rooms/"
+    },
+    {
+      "name": "Criar Room",
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/api/rooms/",
+      "body": {
+        "name": "Sala Teste",
+        "status": "active"
+      }
+    },
+    {
+      "name": "Listar Participants",
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/participants/"
+    },
+    {
+      "name": "Criar Participant",
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/api/participants/",
+      "body": {
+        "name": "Bruno",
+        "slack_handle": "@bruno",
+        "current_room": 1,
+        "role": "observer",
+        "position": 0
+      }
+    },
+    {
+      "name": "Listar Leaders",
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/leaders/"
+    },
+    {
+      "name": "Criar Leader",
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/api/leaders/",
+      "body": {
+        "name": "Líder Teste",
+        "slack_handle": "@lider",
+        "room": 1,
+        "zoom_link": "https://zoom.us/j/123456789"
+      }
+    },
+    {
+      "name": "Listar Sessions",
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/sessions/"
+    },
+    {
+      "name": "Criar Session",
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/api/sessions/",
+      "body": {
+        "current_round": 0,
+        "is_running": false
+      }
+    }
+  ]
+}
