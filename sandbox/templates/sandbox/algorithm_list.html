@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandbox - Algoritmos</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+        
+        .algorithms {
+            padding: 30px;
+        }
+        
+        .algorithm {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .algorithm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #3498db;
+        }
+        
+        .algorithm h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+        
+        .algorithm p {
+            margin: 0 0 15px 0;
+            color: #7f8c8d;
+        }
+        
+        .run-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+        
+        .run-btn:hover {
+            background: #2980b9;
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+        }
+        
+        .result pre {
+            margin: 0;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧪 Sandbox de Algoritmos</h1>
+            <p>Execute algoritmos e veja os resultados</p>
+        </div>
+        
+        <div class="algorithms">
+            {% for algorithm in algorithms %}
+            <div class="algorithm">
+                <h3>{{ algorithm.name }}</h3>
+                <p>{{ algorithm.description }}</p>
+                <button class="run-btn" onclick="runAlgorithm({{ algorithm.id }}, this)">
+                    ▶️ Executar
+                </button>
+                <div class="result" id="result-{{ algorithm.id }}">
+                    <pre id="output-{{ algorithm.id }}"></pre>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        async function runAlgorithm(algorithmId, button) {
+            const originalText = button.innerHTML;
+            button.innerHTML = '⏳ Executando...';
+            button.disabled = true;
+            
+            try {
+                const response = await fetch(`/sandbox/run/${algorithmId}/`);
+                const data = await response.json();
+                
+                const resultDiv = document.getElementById(`result-${algorithmId}`);
+                const outputPre = document.getElementById(`output-${algorithmId}`);
+                
+                if (response.ok) {
+                    outputPre.textContent = JSON.stringify(data, null, 2);
+                    resultDiv.classList.add('show');
+                } else {
+                    outputPre.textContent = `Erro: ${data.error}`;
+                    resultDiv.classList.add('show');
+                }
+            } catch (error) {
+                const resultDiv = document.getElementById(`result-${algorithmId}`);
+                const outputPre = document.getElementById(`output-${algorithmId}`);
+                outputPre.textContent = `Erro: ${error.message}`;
+                resultDiv.classList.add('show');
+            }
+            
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }
+    </script>
+</body>
+</html>

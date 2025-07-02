@@ -1,0 +1,61 @@
+{% extends "sandbox/base.html" %}
+
+{% block content %}
+<div class="stats">
+    <div class="stat-card">
+        <div class="stat-number">{{ total_problems }}</div>
+        <div class="stat-label">Total de Problemas</div>
+    </div>
+    <div class="stat-card difficulty-easy">
+        <div class="stat-number">{{ easy_count }}</div>
+        <div class="stat-label">Fáceis</div>
+    </div>
+    <div class="stat-card difficulty-medium">
+        <div class="stat-number">{{ medium_count }}</div>
+        <div class="stat-label">Médios</div>
+    </div>
+    <div class="stat-card difficulty-hard">
+        <div class="stat-number">{{ hard_count }}</div>
+        <div class="stat-label">Difíceis</div>
+    </div>
+</div>
+
+{% if problems %}
+    <div class="problems-grid">
+        {% for problem in problems %}
+            <div class="problem-card" onclick="window.location.href='{% url 'sandbox:problem_detail' problem.id %}'">
+                <div class="problem-header">
+                    <div class="problem-title">
+                        {{ problem.number }}. {{ problem.title }}
+                    </div>
+                    <div class="difficulty-badge badge-{{ problem.difficulty }}">
+                        {{ problem.get_difficulty_display }}
+                    </div>
+                </div>
+                
+                <div class="problem-meta">
+                    {% if problem.time_complexity %}
+                        <span>⏱️ Tempo: {{ problem.time_complexity }}</span>
+                    {% endif %}
+                    {% if problem.space_complexity %}
+                        <span>💾 Espaço: {{ problem.space_complexity }}</span>
+                    {% endif %}
+                </div>
+                
+                {% if problem.tags %}
+                    <div class="tags">
+                        {% for tag in problem.get_tags_list %}
+                            <span class="tag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div style="text-align: center; padding: 50px; color: #7f8c8d;">
+        <h3>📝 Nenhum problema cadastrado ainda</h3>
+        <p>Acesse o <a href="/admin/" class="btn">Django Admin</a> para adicionar problemas</p>
+    </div>
+{% endif %}
+{% endblock %}
