@@ -61,83 +61,115 @@ def hello_world(request):
     })
 
 @extend_schema(
-    description="""
-    **Two Sum Algorithm**
-    
-    Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to target.
-    
-    **Constraints:**
-    - 2 ≤ nums.length ≤ 10⁴
-    - -10⁹ ≤ nums[i] ≤ 10⁹  
-    - -10⁹ ≤ target ≤ 10⁹
-    - Only one valid answer exists
-    
-    **Algorithm Complexity:**
-    - Time: O(n) - Single pass through the array
-    - Space: O(n) - Hash map storage
-    
-    **Examples:**
-    - Input: nums = [2,7,11,15], target = 9 → Output: [0,1]
-    - Input: nums = [3,2,4], target = 6 → Output: [1,2]  
-    - Input: nums = [3,3], target = 6 → Output: [0,1]
-    """,
-    summary="Two Sum - Find indices of two numbers that add up to target",
     request=TwoSumSerializer,
     responses={
-        200: TwoSumResponseSerializer,
-        400: {
+        200: {
             "type": "object",
             "properties": {
-                "error": {"type": "string", "example": "Invalid input data"}
+                "algorithm": {"type": "string", "example": "Two Sum"},
+                "input": {
+                    "type": "object",
+                    "properties": {
+                        "nums": {"type": "array", "items": {"type": "integer"}, "example": [2, 7, 11, 15]},
+                        "target": {"type": "integer", "example": 9}
+                    }
+                },
+                "result": {"type": "array", "items": {"type": "integer"}, "example": [0, 1]},
+                "description": {"type": "string", "example": "Índices 0 e 1 somam 9"},
+                "time_complexity": {"type": "string", "example": "O(n)"},
+                "space_complexity": {"type": "string", "example": "O(n)"},
+                "execution_time_ms": {"type": "number", "example": 1.23}
+            }
+        },
+        400: {
+            "type": "object", 
+            "properties": {
+                "error": {"type": "string", "example": "Dados de entrada inválidos"}
             }
         }
     },
+    description="""
+    **Two Sum Algorithm**
+    
+    Dado um array de inteiros `nums` e um inteiro `target`, retorna os índices dos dois números que somam o valor alvo.
+    
+    **Constraints:**
+    - 2 <= nums.length <= 10^4
+    - -10^9 <= nums[i] <= 10^9  
+    - -10^9 <= target <= 10^9
+    - Exatamente uma solução válida existe
+    
+    **Complexidade:**
+    - Tempo: O(n) usando HashMap
+    - Espaço: O(n) para armazenar os elementos visitados
+    
+    **Exemplos:**
+    - Input: nums = [2,7,11,15], target = 9 → Output: [0,1]
+    - Input: nums = [3,2,4], target = 6 → Output: [1,2]
+    - Input: nums = [3,3], target = 6 → Output: [0,1]
+    """,
+    summary="Two Sum - Encontrar dois números que somam um valor alvo",
     tags=["Algorithms"]
 )
 @api_view(['POST'])
 def two_sum(request):
-    """
-    Two Sum Algorithm Implementation
+    """Algoritmo Two Sum - Encontrar dois números que somam um valor alvo"""
+    import time
+    start_time = time.time()
     
-    Uses hash map approach for O(n) time complexity.
-    """
+    # Validar dados de entrada
     serializer = TwoSumSerializer(data=request.data)
-    
     if not serializer.is_valid():
         return Response({
-            'error': 'Invalid input data',
+            'error': 'Dados de entrada inválidos',
             'details': serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
     
     nums = serializer.validated_data['nums']
     target = serializer.validated_data['target']
     
-    # Two Sum Algorithm - Hash Map Approach
-    # Time: O(n), Space: O(n)
-    hashmap = {}
-    
-    for i, num in enumerate(nums):
-        complement = target - num
+    try:
+        # Implementação do Two Sum com HashMap - O(n)
+        hashmap = {}
         
-        if complement in hashmap:
-            # Found the solution
-            indices = [hashmap[complement], i]
-            values = [nums[indices[0]], nums[indices[1]]]
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in hashmap:
+                execution_time = (time.time() - start_time) * 1000  # em ms
+                result = [hashmap[complement], i]
+                
+                return Response({
+                    'algorithm': 'Two Sum',
+                    'input': {
+                        'nums': nums,
+                        'target': target
+                    },
+                    'result': result,
+                    'description': f'Índices {result[0]} e {result[1]} somam {target}',
+                    'explanation': f'nums[{result[0]}] + nums[{result[1]}] = {nums[result[0]]} + {nums[result[1]]} = {target}',
+                    'time_complexity': 'O(n)',
+                    'space_complexity': 'O(n)',
+                    'execution_time_ms': round(execution_time, 3)
+                })
             
-            response_data = {
-                'indices': indices,
+            hashmap[num] = i
+        
+        # Se chegou aqui, não encontrou solução (não deveria acontecer segundo o problema)
+        execution_time = (time.time() - start_time) * 1000
+        return Response({
+            'algorithm': 'Two Sum',
+            'input': {
                 'nums': nums,
-                'target': target,
-                'values': values,
-                'explanation': f"nums[{indices[0]}] + nums[{indices[1]}] = {values[0]} + {values[1]} = {target}"
-            }
-            
-            return Response(response_data, status=status.HTTP_200_OK)
+                'target': target
+            },
+            'result': [],
+            'description': 'Nenhuma solução encontrada',
+            'time_complexity': 'O(n)',
+            'space_complexity': 'O(n)',
+            'execution_time_ms': round(execution_time, 3)
+        })
         
-        hashmap[num] = i
-    
-    # This should never happen according to problem constraints
-    return Response({
-        'error': 'No solution found',
-        'message': 'According to problem constraints, a solution should always exist'
-    }, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({
+            'error': f'Erro interno: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

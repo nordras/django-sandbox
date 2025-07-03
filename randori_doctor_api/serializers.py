@@ -26,13 +26,20 @@ class TwoSumSerializer(serializers.Serializer):
         child=serializers.IntegerField(),
         min_length=2,
         max_length=10000,
-        help_text="Array of integers (2 to 10,000 elements)"
+        help_text="Array de inteiros (2 <= length <= 10000)"
     )
     target = serializers.IntegerField(
         min_value=-1000000000,
         max_value=1000000000,
-        help_text="Target sum value"
+        help_text="Valor alvo (-10^9 <= target <= 10^9)"
     )
+
+    def validate_nums(self, value):
+        if len(value) < 2:
+            raise serializers.ValidationError("Array deve ter pelo menos 2 elementos")
+        if len(value) > 10000:
+            raise serializers.ValidationError("Array não pode ter mais de 10000 elementos")
+        return value
 
 class TwoSumResponseSerializer(serializers.Serializer):
     indices = serializers.ListField(
