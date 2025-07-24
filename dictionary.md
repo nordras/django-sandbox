@@ -66,3 +66,29 @@ Se quiser, posso gerar um guia de **exemplos lado a lado** mostrando como conver
 - **None** em Python é próximo de `null` em JS, mas Python **não tem** `undefined`.
 - Para verificação de tipos em Python, prefira `isinstance(x, tipo)` ao invés de `type(x) == tipo`.
 
+IEEE 754 (Institute of Electrical and Electronics Engineers Standard 754) é um padrão que define como representar números de ponto flutuante binários (como 3.14, -0.5, 1e10) na memória do computador, garantindo portabilidade, precisão e previsibilidade entre diferentes sistemas e linguagens.
+
+## Sobre tuplas
+Funções Python podem retornar múltiplos valores com facilidade usando tuplas.
+Se preciso agrupar valores que não deveriam mudar, a tupla deixa isso claro no próprio código.
+Pode ser usado como chave de dict ou em set
+
+### Segurança
+Garante que os dados não serão modificados acidentalmente
+Permite o uso como chaves em dicionários (dict)
+Ajuda a escrever funções mais previsíveis e confiáveis
+
+### Performance
+Tuplas são mais rápidas e mais leves que listas, pois:
+Usam menos memória
+São otimizadas internamente pelo interpretador
+Podem ser usadas como constantes
+
+```python 
+
+(x, y) → ponto no plano
+(nome, idade) → registro simples
+(soma, media) → múltiplos retornos de função
+```
+
+
