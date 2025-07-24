@@ -6,8 +6,7 @@ from drf_spectacular.utils import extend_schema
 from .models import Room, Leader, Participant, Session
 from .serializers import (
     RoomSerializer, LeaderSerializer, ParticipantSerializer, SessionSerializer,
-    TwoSumSerializer, TwoSumResponseSerializer, AddTwoNumbersSerializer,
-    PythonSyntaxSerializer
+    TwoSumSerializer, TwoSumResponseSerializer, AddTwoNumbersSerializer
 )
 
 class RoomViewSet(viewsets.ModelViewSet):
@@ -27,20 +26,29 @@ class SessionViewSet(viewsets.ModelViewSet):
     serializer_class = SessionSerializer
 
 @extend_schema(
-    description="Endpoint Hello World simples para testar a API",
-    summary="Hello World",
+    description="Endpoint Hello World e exemplos de sintaxe Python e Django",
+    summary="Hello World e Exemplos de Sintaxe",
     responses={
         200: {
             "type": "object",
             "properties": {
                 "message": {"type": "string", "example": "Hello World!"},
                 "status": {"type": "string", "example": "success"},
-                "data": {
+                "framework_info": {
                     "type": "object",
                     "properties": {
                         "framework": {"type": "string", "example": "Django REST Framework"},
                         "version": {"type": "string", "example": "1.0.0"},
                         "description": {"type": "string", "example": "Meu primeiro endpoint Django!"}
+                    }
+                },
+                "python_syntax_examples": {
+                    "type": "object",
+                    "properties": {
+                        "variables": {"type": "object"},
+                        "functions": {"type": "object"},
+                        "classes": {"type": "object"},
+                        "data_structures": {"type": "object"}
                     }
                 }
             }
@@ -50,14 +58,154 @@ class SessionViewSet(viewsets.ModelViewSet):
 )
 @api_view(['GET'])
 def hello_world(request):
-    """Endpoint Hello World simples"""
+    """Endpoint Hello World e exemplos de sintaxe Python e Django"""
     return Response({
         'message': 'Hello World!',
         'status': 'success',
-        'data': {
+        'framework_info': {
             'framework': 'Django REST Framework',
             'version': '1.0.0',
             'description': 'Meu primeiro endpoint Django!'
+        },
+        'python_syntax_examples': {
+            'variables': {
+                'string': 'name = "Python"',
+                'integer': 'age = 25',
+                'float': 'pi = 3.14159',
+                'boolean': 'is_active = True',
+                'list': 'numbers = [1, 2, 3, 4, 5]',
+                'dict': 'person = {"name": "João", "age": 30}',
+                'tuple': 'coordinates = (10, 20)',
+                'set': 'unique_numbers = {1, 2, 3, 4, 5}',
+                'none': 'result = None',
+                'multiple_assignment': 'x, y, z = 1, 2, 3',
+                'unpacking': 'a, *rest, b = [1, 2, 3, 4, 5]'
+            },
+            'functions': {
+                'basic_function': 'def greet(name):\n    return f"Hello, {name}!"',
+                'function_with_default': 'def power(base, exponent=2):\n    return base ** exponent',
+                'args_kwargs': 'def flexible_func(*args, **kwargs):\n    return args, kwargs',
+                'lambda': 'square = lambda x: x ** 2',
+                'lambda_with_filter': 'evens = list(filter(lambda x: x % 2 == 0, range(10)))',
+                'list_comprehension': 'squares = [x**2 for x in range(10)]',
+                'dict_comprehension': 'squares_dict = {x: x**2 for x in range(5)}',
+                'generator': 'def fibonacci():\n    a, b = 0, 1\n    while True:\n        yield a\n        a, b = b, a + b',
+                'generator_expression': 'squares_gen = (x**2 for x in range(10))',
+                'closure': 'def outer(x):\n    def inner(y):\n        return x + y\n    return inner',
+                'decorator': '@property\n@staticmethod\n@classmethod\ndef my_decorator(func):\n    def wrapper(*args, **kwargs):\n        print("Before")\n        result = func(*args, **kwargs)\n        print("After")\n        return result\n    return wrapper'
+            },
+            'classes': {
+                'basic_class': 'class Person:\n    def __init__(self, name, age):\n        self.name = name\n        self.age = age\n    \n    def introduce(self):\n        return f"Hi, I\'m {self.name}"',
+                'inheritance': 'class Student(Person):\n    def __init__(self, name, age, course):\n        super().__init__(name, age)\n        self.course = course',
+                'property': 'class Circle:\n    def __init__(self, radius):\n        self._radius = radius\n    \n    @property\n    def area(self):\n        return 3.14159 * self._radius ** 2',
+                'class_methods': 'class MyClass:\n    count = 0\n    \n    @classmethod\n    def get_count(cls):\n        return cls.count\n    \n    @staticmethod\n    def utility_func():\n        return "Static method"',
+                'dunder_methods': 'class Point:\n    def __init__(self, x, y):\n        self.x, self.y = x, y\n    \n    def __str__(self):\n        return f"Point({self.x}, {self.y})"\n    \n    def __add__(self, other):\n        return Point(self.x + other.x, self.y + other.y)',
+                'context_manager': 'class FileManager:\n    def __init__(self, filename, mode):\n        self.filename = filename\n        self.mode = mode\n    \n    def __enter__(self):\n        self.file = open(self.filename, self.mode)\n        return self.file\n    \n    def __exit__(self, exc_type, exc_val, exc_tb):\n        self.file.close()'
+            },
+            'data_structures': {
+                'stack': 'stack = []\nstack.append(1)  # push\nitem = stack.pop()  # pop',
+                'queue': 'from collections import deque\nqueue = deque()\nqueue.append(1)  # enqueue\nitem = queue.popleft()  # dequeue',
+                'dictionary_operations': 'data = {}\ndata["key"] = "value"\nvalue = data.get("key", "default")',
+                'set_operations': 'set1 = {1, 2, 3}\nset2 = {3, 4, 5}\nunion = set1 | set2\nintersection = set1 & set2',
+                'defaultdict': 'from collections import defaultdict\ndd = defaultdict(list)\ndd["key"].append("value")',
+                'counter': 'from collections import Counter\ncounts = Counter("hello world")',
+                'namedtuple': 'from collections import namedtuple\nPoint = namedtuple("Point", ["x", "y"])\np = Point(1, 2)',
+                'heapq': 'import heapq\nheap = [3, 1, 4, 1, 5]\nheapq.heapify(heap)\nsmallest = heapq.heappop(heap)'
+            },
+            'control_flow': {
+                'if_statement': 'if age >= 18:\n    print("Adult")\nelif age >= 13:\n    print("Teenager")\nelse:\n    print("Child")',
+                'for_loop': 'for i in range(5):\n    print(f"Number: {i}")',
+                'for_enumerate': 'for index, value in enumerate(["a", "b", "c"]):\n    print(f"{index}: {value}")',
+                'for_zip': 'for x, y in zip([1, 2, 3], ["a", "b", "c"]):\n    print(f"{x}: {y}")',
+                'while_loop': 'count = 0\nwhile count < 5:\n    print(count)\n    count += 1',
+                'try_except': 'try:\n    result = 10 / 0\nexcept ZeroDivisionError:\n    print("Cannot divide by zero")\nfinally:\n    print("Cleanup")',
+                'with_statement': 'with open("file.txt", "r") as f:\n    content = f.read()',
+                'match_case': 'match value:\n    case 1:\n        print("One")\n    case 2 | 3:\n        print("Two or Three")\n    case _:\n        print("Other")'
+            },
+            'advanced_concepts': {
+                'itertools': 'import itertools\nperms = list(itertools.permutations([1, 2, 3]))\ncombos = list(itertools.combinations([1, 2, 3, 4], 2))',
+                'functools': 'from functools import reduce, partial\nsum_all = reduce(lambda x, y: x + y, [1, 2, 3, 4])\ndouble = partial(lambda x, y: x * y, 2)',
+                'asyncio': 'import asyncio\n\nasync def fetch_data():\n    await asyncio.sleep(1)\n    return "data"\n\nasync def main():\n    result = await fetch_data()',
+                'type_hints': 'from typing import List, Dict, Optional\n\ndef process_data(items: List[int]) -> Dict[str, int]:\n    return {"count": len(items)}',
+                'dataclass': 'from dataclasses import dataclass\n\n@dataclass\nclass Person:\n    name: str\n    age: int\n    active: bool = True',
+                'enum': 'from enum import Enum\n\nclass Status(Enum):\n    PENDING = 1\n    RUNNING = 2\n    COMPLETED = 3'
+            },
+            'django_examples': {
+                'model': 'class User(models.Model):\n    name = models.CharField(max_length=100)\n    email = models.EmailField()\n    created_at = models.DateTimeField(auto_now_add=True)',
+                'model_advanced': 'class Post(models.Model):\n    title = models.CharField(max_length=200)\n    author = models.ForeignKey(User, on_delete=models.CASCADE)\n    tags = models.ManyToManyField("Tag")\n    \n    class Meta:\n        ordering = ["-created_at"]\n        verbose_name_plural = "Posts"',
+                'serializer': 'class UserSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = User\n        fields = ["id", "name", "email"]',
+                'serializer_advanced': 'class PostSerializer(serializers.ModelSerializer):\n    author_name = serializers.CharField(source="author.name", read_only=True)\n    tag_names = serializers.SerializerMethodField()\n    \n    def get_tag_names(self, obj):\n        return [tag.name for tag in obj.tags.all()]',
+                'view': '@api_view(["GET"])\ndef get_users(request):\n    users = User.objects.all()\n    serializer = UserSerializer(users, many=True)\n    return Response(serializer.data)',
+                'viewset': 'class UserViewSet(viewsets.ModelViewSet):\n    queryset = User.objects.all()\n    serializer_class = UserSerializer\n    filter_backends = [DjangoFilterBackend]\n    filterset_fields = ["name", "email"]',
+                'url_pattern': 'urlpatterns = [\n    path("users/", get_users, name="users"),\n    path("users/<int:pk>/", get_user, name="user_detail"),\n]',
+                'middleware': 'class CustomMiddleware:\n    def __init__(self, get_response):\n        self.get_response = get_response\n    \n    def __call__(self, request):\n        # Before view\n        response = self.get_response(request)\n        # After view\n        return response',
+                'admin': 'class UserAdmin(admin.ModelAdmin):\n    list_display = ["name", "email", "created_at"]\n    list_filter = ["created_at"]\n    search_fields = ["name", "email"]\n\nadmin.site.register(User, UserAdmin)',
+                'signals': 'from django.db.models.signals import post_save\nfrom django.dispatch import receiver\n\n@receiver(post_save, sender=User)\ndef user_post_save(sender, instance, created, **kwargs):\n    if created:\n        print(f"New user created: {instance.name}")'
+            },
+            'algorithms_examples': {
+                'bubble_sort': 'def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]\n    return arr',
+                'quick_sort': 'def quick_sort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    left = [x for x in arr if x < pivot]\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quick_sort(left) + middle + quick_sort(right)',
+                'binary_search': 'def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1',
+                'fibonacci': 'def fibonacci(n):\n    if n <= 1:\n        return n\n    return fibonacci(n-1) + fibonacci(n-2)',
+                'fibonacci_memoized': 'from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fibonacci_memo(n):\n    if n <= 1:\n        return n\n    return fibonacci_memo(n-1) + fibonacci_memo(n-2)',
+                'dfs': 'def dfs(graph, start, visited=None):\n    if visited is None:\n        visited = set()\n    visited.add(start)\n    for neighbor in graph[start]:\n        if neighbor not in visited:\n            dfs(graph, neighbor, visited)\n    return visited',
+                'bfs': 'from collections import deque\n\ndef bfs(graph, start):\n    visited = set()\n    queue = deque([start])\n    while queue:\n        vertex = queue.popleft()\n        if vertex not in visited:\n            visited.add(vertex)\n            queue.extend(graph[vertex] - visited)\n    return visited'
+            }
+        },
+        'useful_tips': {
+            'python_zen': 'import this  # Para ver o Zen do Python',
+            'debugging': 'import pdb; pdb.set_trace()  # Para debugging',
+            'performance': 'import timeit  # Para medir performance',
+            'formatting': 'name = "World"\nmessage = f"Hello, {name}!"  # f-strings',
+            'unpacking': 'a, b, *rest = [1, 2, 3, 4, 5]  # Unpacking',
+            'walrus_operator': 'if (n := len(data)) > 10:\n    print(f"Large dataset: {n} items")',
+            'context_managers': 'with open("file.txt") as f:\n    data = f.read()  # Automatically closes file',
+            'comprehensions': 'squares = [x**2 for x in range(10) if x % 2 == 0]',
+            'pathlib': 'from pathlib import Path\nfile_path = Path("data") / "file.txt"',
+            'environment_vars': 'import os\ndb_url = os.getenv("DATABASE_URL", "default_value")',
+            'logging': 'import logging\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)',
+            'json_handling': 'import json\ndata = json.loads(json_string)\njson_string = json.dumps(data, indent=2)',
+            'datetime': 'from datetime import datetime, timedelta\nnow = datetime.now()\ntomorrow = now + timedelta(days=1)',
+            'regex': 'import re\npattern = r"\\d+"\nmatches = re.findall(pattern, "123 abc 456")',
+            'virtual_env': 'python -m venv venv\nsource venv/bin/activate  # Linux/Mac\nvenv\\Scripts\\activate  # Windows',
+            'pip_requirements': 'pip freeze > requirements.txt\npip install -r requirements.txt',
+            'django_shell': 'python manage.py shell  # Django interactive shell',
+            'django_migrations': 'python manage.py makemigrations\npython manage.py migrate',
+            'django_superuser': 'python manage.py createsuperuser',
+            'django_static': 'python manage.py collectstatic',
+            'testing': 'python -m pytest  # Run tests with pytest\npython manage.py test  # Django tests',
+            'list_methods': 'help(list)  # Ver métodos disponíveis',
+            'object_attributes': 'dir(object)  # Ver atributos do objeto',
+            'memory_usage': 'import sys\nsys.getsizeof(object)  # Tamanho em bytes',
+            'pretty_print': 'import pprint\npprint.pprint(complex_data_structure)'
+        },
+        'best_practices': {
+            'naming_conventions': {
+                'variables': 'snake_case para variáveis e funções',
+                'classes': 'PascalCase para classes',
+                'constants': 'UPPER_CASE para constantes',
+                'private': '_private_method para métodos privados'
+            },
+            'code_organization': {
+                'imports': 'import padrão, import terceiros, import locais',
+                'docstrings': 'def function():\n    """Descrição da função."""\n    pass',
+                'error_handling': 'Seja específico com exceptions',
+                'functions': 'Funções devem fazer uma coisa bem'
+            },
+            'django_best_practices': {
+                'models': 'Use verbose_name e help_text',
+                'views': 'Use class-based views quando apropriado',
+                'urls': 'Use namespaces para apps',
+                'settings': 'Separe settings por ambiente',
+                'security': 'Use HTTPS, validação de entrada, CSRF protection'
+            },
+            'performance_tips': {
+                'list_vs_generator': 'Use generators para economizar memória',
+                'dict_lookup': 'Dicionários são O(1) para lookup',
+                'string_joining': 'Use "".join(list) ao invés de += para strings',
+                'comprehensions': 'List comprehensions são mais rápidas que loops',
+                'caching': 'Use @lru_cache para memoização'
+            }
         }
     })
 
