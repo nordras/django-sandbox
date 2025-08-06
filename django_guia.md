@@ -17,19 +17,34 @@ Django é um framework web em Python para desenvolvimento rápido, seguro e esca
 
 ## O que é um App Django?
 Um app é um componente modular do projeto, responsável por uma funcionalidade específica (ex: blog, api, autenticação, etc).
+Django follows the MVT design pattern (Model View Template).
+
+Model - The data you want to present, usually data from a database.
+View - A request handler that returns the relevant template and content - based on the request from the user.
+Template - A text file (like an HTML file) containing the layout of the web page, with logic on how to display the data.
 
 ---
 
 ## Principais Arquivos de um App Django
-- **models.py**: Define os modelos (tabelas do banco de dados).
-- **views.py**: Define as views (lógica de requisição/resposta).
-- **serializers.py**: (DRF) Serializa dados para APIs REST.
-- **urls.py**: Rotas específicas do app.
-- **tests.py**: Testes automatizados do app.
-- **admin.py**: Configura modelos para o admin do Django.
-- **apps.py**: Configurações do app.
-- **migrations/**: Scripts de migração do banco de dados.
+manage.py: Script para executar comandos administrativos do Django (migrações, servidor, shell, etc).
+settings.py: Configurações do projeto (banco de dados, apps instalados, templates, etc).
+urls.py: Mapeamento de URLs para views.
+wsgi.py: Interface para servidores web (produção).
+apps.py: Configuração da aplicação (nome, auto_field, etc).
+models.py: Definição das estruturas de dados (tabelas do banco).
+views.py: Lógica das páginas e APIs (controllers).
+admin.py: Configuração do painel administrativo.
+tests.py: Testes automatizados da aplicação.
+migrations/: Histórico de migrações do banco de dados.
+templates/: Arquivos HTML para renderização das páginas.
+static/: Arquivos estáticos (CSS, JS, imagens).
 
+## Fluxo Básico
+Modelos: Definem as tabelas do banco de dados.
+Views: Recebem requisições, processam dados e retornam respostas.
+Templates: Renderizam o HTML para o usuário.
+URLs: Roteiam as requisições para as views corretas.
+Admin: Interface administrativa para gerenciar dados.
 ---
 
 ## O que são Modelos?
@@ -52,6 +67,7 @@ class Livro(models.Model):
 - `python manage.py migrate` — Aplica as migrações ao banco de dados.
 - `python manage.py runserver` — Inicia o servidor de desenvolvimento.
 - `python manage.py createsuperuser` — Cria um usuário admin.
+
 
 ---
 

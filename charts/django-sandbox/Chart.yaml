@@ -1,0 +1,4 @@
+apiVersion: v2
+name: django-sandbox
+version: 0.1.0
+description: Helm chart for Django Sandbox
