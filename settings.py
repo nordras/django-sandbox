@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'randori_doctor_api',
+    'sandbox',
 ]
 
 MIDDLEWARE = [
@@ -87,8 +88,32 @@ REST_FRAMEWORK = {
 # drf-spectacular settings
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Django Sandbox API',
-    'DESCRIPTION': 'API de treino e experimentação com Django REST Framework',
+    'DESCRIPTION': 'API completa para treino de algoritmos e experimentação com Django REST Framework. Inclui sandbox interativo, algoritmos clássicos e métricas de performance.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    # Outras configurações podem ser adicionadas aqui
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SORT_OPERATIONS': False,
+    'TAGS': [
+        {
+            'name': 'Sandbox',
+            'description': 'Endpoints do sandbox para execução de algoritmos'
+        },
+        {
+            'name': 'Algoritmos Customizados', 
+            'description': 'Execução de algoritmos com entrada personalizada'
+        },
+        {
+            'name': 'API Principal',
+            'description': 'Endpoints principais da API randori_doctor'
+        }
+    ],
+    'EXTERNAL_DOCS': {
+        'description': 'Documentação completa no GitHub',
+        'url': 'https://github.com/nordras/django-sandbox'
+    },
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+    }
 }

@@ -10,6 +10,7 @@ urlpatterns = [
     path('', redirect_to_api, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include('randori_doctor_api.urls')),
+    path('sandbox/', include('sandbox.urls')),
     # URLs do Swagger
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
