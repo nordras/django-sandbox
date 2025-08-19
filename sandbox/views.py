@@ -15,6 +15,36 @@ ALGORITHMS = [
         'description': 'Inverter uma string',
         'function': 'reverse_string'
     },
+        {
+            'id': 10,
+            'name': 'Maximum Subarray',
+            'description': 'Encontrar soma máxima de subarray contínuo',
+            'function': 'maximum_subarray'
+        },
+        {
+            'id': 11,
+            'name': 'Climbing Stairs',
+            'description': 'Quantas formas de subir escadas',
+            'function': 'climbing_stairs'
+        },
+        {
+            'id': 12,
+            'name': 'Valid Parentheses',
+            'description': 'Verificar se parênteses são válidos',
+            'function': 'valid_parentheses'
+        },
+        {
+            'id': 13,
+            'name': 'Merge Intervals',
+            'description': 'Unir intervalos sobrepostos',
+            'function': 'merge_intervals'
+        },
+        {
+            'id': 14,
+            'name': 'Longest Common Prefix',
+            'description': 'Prefixo comum mais longo em array de strings',
+            'function': 'longest_common_prefix'
+        }
     {
         'id': 3,
         'name': 'Fibonacci',
@@ -98,6 +128,16 @@ def execute_algorithm(function_name):
         return contains_duplicate([1, 2, 3, 1])
     elif function_name == 'valid_anagram':
         return valid_anagram("listen", "silent")
+    elif function_name == 'maximum_subarray':
+        return maximum_subarray([-2,1,-3,4,-1,2,1,-5,4])
+    elif function_name == 'climbing_stairs':
+        return climbing_stairs(5)
+    elif function_name == 'valid_parentheses':
+        return valid_parentheses("()[]{}")
+    elif function_name == 'merge_intervals':
+        return merge_intervals([[1,3],[2,6],[8,10],[15,18]])
+    elif function_name == 'longest_common_prefix':
+        return longest_common_prefix(["flower","flow","flight"])
     else:
         return "Algoritmo não implementado"
 
@@ -177,3 +217,51 @@ def contains_duplicate(nums):
 def valid_anagram(s, t):
     """Verificar se duas strings são anagramas"""
     return sorted(s.lower()) == sorted(t.lower())
+
+def maximum_subarray(nums):
+    max_sum = nums[0]
+    curr_sum = nums[0]
+    for num in nums[1:]:
+        curr_sum = max(num, curr_sum + num)
+        max_sum = max(max_sum, curr_sum)
+    return max_sum
+
+def climbing_stairs(n):
+    if n <= 2:
+        return n
+    a, b = 1, 2
+    for _ in range(3, n+1):
+        a, b = b, a + b
+    return b
+
+def valid_parentheses(s):
+    stack = []
+    mapping = {')': '(', '}': '{', ']': '['}
+    for char in s:
+        if char in mapping.values():
+            stack.append(char)
+        elif char in mapping:
+            if not stack or stack.pop() != mapping[char]:
+                return False
+    return not stack
+
+def merge_intervals(intervals):
+    intervals.sort(key=lambda x: x[0])
+    merged = []
+    for interval in intervals:
+        if not merged or merged[-1][1] < interval[0]:
+            merged.append(interval)
+        else:
+            merged[-1][1] = max(merged[-1][1], interval[1])
+    return merged
+
+def longest_common_prefix(strs):
+    if not strs:
+        return ""
+    prefix = strs[0]
+    for s in strs[1:]:
+        while not s.startswith(prefix):
+            prefix = prefix[:-1]
+            if not prefix:
+                return ""
+    return prefix
